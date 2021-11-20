@@ -3,7 +3,7 @@ title: "Kelp Canopy Cover Summary Using CDFW County Shapefiles"
 author: "Gina Contolini"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: 
-  html_document:
+  pdf_document:
 header-includes:
 - \usepackage{caption}
 - \captionsetup[figure]{labelformat=empty}
@@ -13,7 +13,7 @@ toc: FALSE
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning=FALSE) 
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
 
 #### Load libraries ####
 library(ggplot2) # plotting
