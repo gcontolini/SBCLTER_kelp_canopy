@@ -1,7 +1,7 @@
 ---
 title: "Kelp Canopy Cover Summary Using CDFW County Shapefiles"
 author: "Gina Contolini"
-date: "`r format(Sys.time(), '%d %B %Y')`"
+date: Updated `r format(Sys.time(), '%d %B %Y')`
 output: 
   html_document:
 header-includes:
@@ -67,7 +67,7 @@ my.theme = theme(
 ```
 
 # Objective
-Summarize California kelp abundance trends by county using shapefiles of state waters delineated by coastal counties.
+Summarize California kelp abundance trends from Landsat satellite imagery (SBC LTER et al. 2020) by county using shapefiles of state waters delineated by coastal counties.
 
 # Methods
 ## Satellite imagery
