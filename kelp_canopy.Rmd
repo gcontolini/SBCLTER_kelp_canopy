@@ -81,97 +81,100 @@ Data are organized into a single NetCDF file and contain the quarterly area mean
 Figures were created using the above dataset in conjunction with CDFW county shapefiles, which include state waters within counties. Maximum annual canopy area is defined as the quarter each year with the greatest canopy area.
 
 ```{r Load county shapefiles and match with Landsast data, include = FALSE}
-# The loop below takes 5 minutes to run. 
+# The loop below takes 5 minutes to run, so I have commented it out and read in the output at the end.
 
-#### Kelp Biomass and Area Dynamics of state waters by county ####
-#Load Admin Bed Shapefile
-#Place the lat/lon version of the Admin Bed shapefile in your working directory
-county_waters <- st_read('shapefiles/MAN_CA_CountyStateWaters.shp') 
+# #### Kelp Biomass and Area Dynamics of state waters by county ####
+# #Load Admin Bed Shapefile
+# #Place the lat/lon version of the Admin Bed shapefile in your working directory
+# county_waters <- st_read('shapefiles/MAN_CA_CountyStateWaters.shp') 
+# 
+# #Open Kelp NetCDF File and put in your working directory.
+# #The file can be found here: https://portal.edirepository.org/nis/mapbrowse?scope=knb-lter-sbc&identifier=74
+# nc_data <- nc_open('kelpCanopyFromLandsat_2021.nc')
+# # not sure yet how to open it in directly from a URL.
+# # apparently this file is too big for the RStudio Cloud server. So we can't use the server. Or wait we just have to use a static .csv.
+# 
+# #Load necessary variables from NetCDF File
+# lon <- ncvar_get(nc_data, 'lon')
+# lat <- ncvar_get(nc_data, 'lat')
+# years <- ncvar_get(nc_data, 'year')
+# quarters <- ncvar_get(nc_data, 'quarter')
+# biomass <- ncvar_get(nc_data, 'biomass')
+# area <- ncvar_get(nc_data, 'area')
+# 
+# #Make Coordinate Dataframe
+# coords <- data.frame(lon,lat)
+# 
+# #Create output matrices
+# LN = dim(quarters)
+# output_biomass <- matrix(ncol=LN, nrow=22)
+# output_area <- matrix(ncol=LN, nrow=22)
+# 
+# # This for() loop takes 5 mins. Sorry. You could run it once and then save the output, but then it wouldn't be linked to the SBCLTER data repository anymore. 
+# for(i in 1:22){
+# 
+#   #Pull shapefile coordinates from each admin bed
+#   if (i == 17) {
+#     county_coords <- as.data.frame(county_waters[i,]$geometry[[1]][[30]][[1]])
+#   } else {
+#     county_coords <- as.data.frame(county_waters[i,]$geometry[[1]][[1]][[1]])
+#   }
+# 
+#   #Find the kelp coordinates that exist inside each admin bed polygon
+#   kelp_poly <- point.in.polygon(lon, lat, county_coords$V1, county_coords$V2, mode.checked = FALSE)
+#   TF <- which(kelp_poly %in% 1)
+# 
+#   #Extract biomass and area data for each polygon
+#   bio_county <- biomass[TF,]
+#   area_county <- area[TF,]
+# 
+#   #Sum biomass and area
+#   bio_county_sum <- colSums(bio_county, na.rm = TRUE, dims = 1)
+#   area_county_sum <- colSums(area_county, na.rm = TRUE, dims = 1)
+# 
+#   #Remove Columns w/ >25% No Data (Clouds)
+#   #Find all NA values (missing data) in the kelp dataset
+#   bio_county_NA = is.na(bio_county)
+#   area_county_NA = is.na(area_county)
+# 
+#   #Find number of kelp pixels in the polygon
+#   L = dim(bio_county)
+# 
+#   #Calculate the percent of NAs for each season
+#   bio_county_NA_percent <- colSums(bio_county_NA, na.rm = TRUE)/L[1]
+#   area_county_NA_percent <- colSums(area_county_NA, na.rm = TRUE)/L[1]
+# 
+#   #Find seasons with greater than 20% missing data
+#   NA_GT <- which(bio_county_NA_percent > 0.25)
+#   NA_GTA <- which(area_county_NA_percent > 0.25)
+# 
+#   #Set seasons with greater than 20% missing data to -999
+#   bio_county_sum[NA_GT] = -999
+#   area_county_sum[NA_GTA] = -999
+# 
+#   #Add summed kelp canopy data to matrix
+#   output_biomass[i,] <- bio_county_sum
+#   output_area[i,] <- area_county_sum
+# 
+# }
+# 
+# #Transpose Quarter and Year data
+# quarterst <- t(quarters)
+# yearst <- t(years)
+# 
+# #Add Quarter and Year data to output matrices
+# output2_biomass <- rbind(quarterst, output_biomass)
+# output3_biomass <- rbind(yearst, output2_biomass)
+# output2_area <- rbind(quarterst, output_area)
+# output3_area <- rbind(yearst, output2_area)
+# 
+# #Add county to output matrices
+# CountiesNA <- county_waters$County
+# Counties <- c(rep(NA,2),CountiesNA)
+# output4_biomass <- cbind(Counties, output3_biomass)
+# output4_area <- cbind(Counties, output3_area)
 
-#Open Kelp NetCDF File and put in your working directory.
-#The file can be found here: https://portal.edirepository.org/nis/mapbrowse?scope=knb-lter-sbc&identifier=74
-nc_data <- nc_open('kelpCanopyFromLandsat_2021.nc')
-# not sure yet how to open it in directly from a URL.
-
-#Load necessary variables from NetCDF File
-lon <- ncvar_get(nc_data, 'lon')
-lat <- ncvar_get(nc_data, 'lat')
-years <- ncvar_get(nc_data, 'year')
-quarters <- ncvar_get(nc_data, 'quarter')
-biomass <- ncvar_get(nc_data, 'biomass')
-area <- ncvar_get(nc_data, 'area')
-
-#Make Coordinate Dataframe
-coords <- data.frame(lon,lat)
-
-#Create output matrices
-LN = dim(quarters)
-output_biomass <- matrix(ncol=LN, nrow=22)
-output_area <- matrix(ncol=LN, nrow=22)
-
-# This for() loop takes 5 mins. Sorry. You could run it once and then save the output, but then it wouldn't be linked to the SBCLTER data repository anymore. 
-for(i in 1:22){
-
-  #Pull shapefile coordinates from each admin bed
-  if (i == 17) {
-    county_coords <- as.data.frame(county_waters[i,]$geometry[[1]][[30]][[1]])
-  } else {
-    county_coords <- as.data.frame(county_waters[i,]$geometry[[1]][[1]][[1]])
-  }
-
-  #Find the kelp coordinates that exist inside each admin bed polygon
-  kelp_poly <- point.in.polygon(lon, lat, county_coords$V1, county_coords$V2, mode.checked = FALSE)
-  TF <- which(kelp_poly %in% 1)
-
-  #Extract biomass and area data for each polygon
-  bio_county <- biomass[TF,]
-  area_county <- area[TF,]
-
-  #Sum biomass and area
-  bio_county_sum <- colSums(bio_county, na.rm = TRUE, dims = 1)
-  area_county_sum <- colSums(area_county, na.rm = TRUE, dims = 1)
-
-  #Remove Columns w/ >25% No Data (Clouds)
-  #Find all NA values (missing data) in the kelp dataset
-  bio_county_NA = is.na(bio_county)
-  area_county_NA = is.na(area_county)
-
-  #Find number of kelp pixels in the polygon
-  L = dim(bio_county)
-
-  #Calculate the percent of NAs for each season
-  bio_county_NA_percent <- colSums(bio_county_NA, na.rm = TRUE)/L[1]
-  area_county_NA_percent <- colSums(area_county_NA, na.rm = TRUE)/L[1]
-
-  #Find seasons with greater than 20% missing data
-  NA_GT <- which(bio_county_NA_percent > 0.25)
-  NA_GTA <- which(area_county_NA_percent > 0.25)
-
-  #Set seasons with greater than 20% missing data to -999
-  bio_county_sum[NA_GT] = -999
-  area_county_sum[NA_GTA] = -999
-
-  #Add summed kelp canopy data to matrix
-  output_biomass[i,] <- bio_county_sum
-  output_area[i,] <- area_county_sum
-
-}
-
-#Transpose Quarter and Year data
-quarterst <- t(quarters)
-yearst <- t(years)
-
-#Add Quarter and Year data to output matrices
-output2_biomass <- rbind(quarterst, output_biomass)
-output3_biomass <- rbind(yearst, output2_biomass)
-output2_area <- rbind(quarterst, output_area)
-output3_area <- rbind(yearst, output2_area)
-
-#Add county to output matrices
-CountiesNA <- county_waters$County
-Counties <- c(rep(NA,2),CountiesNA)
-output4_biomass <- cbind(Counties, output3_biomass)
-output4_area <- cbind(Counties, output3_area)
+output4_area <- read.csv('kelp_canopy_area_2021-11-24.csv')
 
 ```
 
