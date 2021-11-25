@@ -3,7 +3,7 @@ title: "Kelp Canopy Cover Summary Using CDFW County Shapefiles"
 author: "Gina Contolini"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: 
-  word_document:
+  html_document:
 header-includes:
 - \usepackage{caption}
 - \captionsetup[figure]{labelformat=empty}
@@ -174,13 +174,16 @@ Figures were created using the above dataset in conjunction with CDFW county sha
 # output4_biomass <- cbind(Counties, output3_biomass)
 # output4_area <- cbind(Counties, output3_area)
 
-output4_area <- read.csv('kelp_canopy_area_2021-11-24.csv')
+output4_area <- read_csv("kelp_canopy_output_ 2021-11-24 .csv")
 
 ```
 
 ```{r admin kelp county canopy area tidying, include = FALSE}
 canopy_area <- output4_area %>%
    as.data.frame()
+
+# remove first col which is just row numbers
+canopy_area[,1] <- NULL
 
 # I want to plot area vs. year.quarter. This means year.quarter needs to be in a column. Currently all cols are separate. This is called wide format. I want tall format.
 
@@ -230,8 +233,8 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Del Norte'),], aes(x =
    geom_point() +
    geom_line() +
    scale_x_continuous(breaks = 1984:2021, expand = c(0,0)) +
-   scale_y_continuous(breaks = seq(0, 0.015, 0.0025), expand = c(0.005,0)) +
-   labs(x = 'Year',  y = 'Canopy Area (km2)') +
+   scale_y_continuous(breaks = seq(0, 0.015, 0.0025), expand = c(0.05,0)) +
+   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Del Norte County Quarterly') +
    my.theme
 
@@ -241,7 +244,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Humboldt'),], aes(x = 
    geom_line() +
    scale_x_continuous(breaks = 1984:2021, expand = c(0,0)) +
    #scale_y_continuous(limits = c(0,0.0225), breaks = seq(0, 0.025, 0.0025), expand = c(0.005,0)) +
-   labs(x = 'Year',  y = 'Canopy Area (km2)') +
+   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Humboldt County Quarterly') +
    my.theme
 
@@ -251,7 +254,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Mendocino'),], aes(x =
    geom_line() +
    scale_x_continuous(breaks = 1984:2021, expand = c(0,0)) +
    #scale_y_continuous(limits = c(0,3), breaks = seq(0, 3, 0.25), expand = c(0.001,0)) +
-   labs(x = 'Year',  y = 'Canopy Area (km2)') +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Mendocino County Quarterly') +
    my.theme
 
@@ -261,7 +264,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Sonoma'),], aes(x = ye
    geom_line() +
    scale_x_continuous(breaks = 1984:2021, expand = c(0,0)) +
    scale_y_continuous(limits = c(0,2), breaks = seq(0, 2, 0.25), expand = c(0.001,0)) +
-   labs(x = 'Year',  y = 'Canopy Area (km2)') +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Sonoma County Quarterly') +
    my.theme
 
@@ -271,7 +274,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Marin'),], aes(x = yea
    geom_line() +
    scale_x_continuous(breaks = 1984:2021, expand = c(0,0)) +
    scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(0.001,0)) +
-   labs(x = 'Year',  y = 'Canopy Area (km2)') +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Marin County Quarterly') +
    my.theme
 ```
@@ -299,4 +302,4 @@ Figure 2. Annual maximum canopy area (measured quarterly) in state waters in coa
 ``` 
 
 # Literature Cited
-Santa Barbara Coastal LTER, T. Bell, K. Cavanaugh, and D. Siegel. 2021. SBC LTER: Time series of quarterly NetCDF files of kelp biomass in the canopy from Landsat 5, 7 and 8, since 1984 (ongoing) ver 14. Environmental Data Initiative. https://doi.org/10.6073/pasta/89b63c4b49b80fb839613e9d389d9902 (Accessed 2021-05-18).
+Santa Barbara Coastal LTER, T. Bell, K. Cavanaugh, and D. Siegel. 2021. SBC LTER: Time series of quarterly NetCDF files of kelp biomass in the canopy from Landsat 5, 7 and 8, since 1984 (ongoing) ver 14. Environmental Data Initiative. https://doi.org/10.6073/pasta/89b63c4b49b80fb839613e9d389d9902 (Accessed 2021-11-24).
