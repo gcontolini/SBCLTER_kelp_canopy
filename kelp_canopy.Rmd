@@ -370,7 +370,7 @@ kable(n_max_qtrs_county
       , linesep = ''
       , caption = 'Number of quarters with maximum annual canopy area'
 ) %>%
-  kable_styling()
+  kable_styling(latex_options = 'hold_position') # otherwise the table moves in the pdf
       
 ```
 
