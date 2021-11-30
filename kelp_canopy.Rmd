@@ -368,7 +368,7 @@ kable(n_max_qtrs_county
       , row.names = FALSE
       , align = 'c'
       , linesep = ''
-      , caption = 'Quarters with maximum annual canopy area by county'
+      , caption = 'Number of quarters with maximum annual canopy area'
 ) %>%
   kable_styling()
       
