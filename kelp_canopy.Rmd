@@ -1,5 +1,5 @@
 ---
-title: "Kelp Canopy Cover Summary Using CDFW County Shapefiles"
+title: "Quarterly Kelp Canopy Cover Summary Using CDFW County Shapefiles for Remote Sensing Report"
 author: "Gina Contolini"
 date: Updated `r format(Sys.time(), '%d %B %Y')`
 output: 
@@ -68,18 +68,18 @@ my.theme = theme(
 ```
 
 # Objective
-Summarize California kelp abundance trends from Landsat satellite imagery (SBC LTER et al. 2020) by county using shapefiles of state waters delineated by coastal counties.
+Summarize California quarterly kelp abundance trends from Landsat satellite imagery (SBC LTER et al. 2021) by county using shapefiles of state waters delineated by coastal counties for use in the Office of National Marine Sanctuaries kelp remote sensing report.
 
 # Methods
 ## Satellite imagery
-Kelp canopy area data are from the Santa Barbara Coastal Long-term Ecological Research Landsat satellite data series updated through all four quarters of 2020 (Santa Barbara Coastal LTER et al. 2021; https://doi.org/10.6073/pasta/89b63c4b49b80fb839613e9d389d9902). The data represents a time series of canopy area of giant kelp, *Macrocystis pyrifera*, and bull kelp, *Nereocystis luetkeana* derived from Landsat 5 Thematic Mapper (TM), Landsat 7 Enhanced Thematic Mapper Plus (ETM+), and Landsat 8 Operational Land Imager (OLI) satellite imagery, along with relevant metadata. The kelp canopy is composed of the portions of fronds and stipes floating on the surface of the water. Canopy area (m) data are given for individual 30 x 30 meter pixels for all coastal areas of California, including the Northern and Southern Channel Islands.
+Kelp canopy area data are from the SBC LTER Time series of quarterly NetCDF files of kelp biomass in the canopy from Landsat 5, 7 and 8, since 1984 (ongoing) updated through all four quarters of 2020 (accessed 24 Nov 2021; Santa Barbara Coastal LTER et al. 2021; https://doi.org/10.6073/pasta/89b63c4b49b80fb839613e9d389d9902). The data represents a time series of canopy area of giant kelp, *Macrocystis pyrifera*, and bull kelp, *Nereocystis luetkeana* derived from Landsat 5 Thematic Mapper (TM), Landsat 7 Enhanced Thematic Mapper Plus (ETM+), and Landsat 8 Operational Land Imager (OLI) satellite imagery, along with relevant metadata. The kelp canopy is composed of the portions of fronds and stipes floating on the surface of the water. Canopy area (m) data are given for individual 30 x 30 meter pixels for all coastal areas of California, including the Northern and Southern Channel Islands.
 
 Data were derived from the three Landsat sensors listed above. Observations are made on a 16 day repeat cycle for each instrument, but the temporal coverage is irregular because of cloud cover, instrument failure, and the mission length of each sensor (TM: 1984 – 2011, ETM+: 1999 – present, OLI: 2013 – present). Estimates of canopy area are derived from the fractional cover of kelp canopy determined from satellite surface reflectance. Updates to the 2021 dataset include correcting cloud reflectance errors and improving the landmasking procedure, which increased the detection of kelp especially in the northern region. The different Landsat sensors were calibrated to each other using simulated Landsat data derived from hyperspectral imagery. Missing data due to the ETM+ scan line corrector error were filled using a synchrony-based gap filling method. 
 
 Data are organized into a single NetCDF file and contain the quarterly area means for each Landsat pixel across the three sensors. Relevant metadata such as number of Landsat estimates from which the mean was derived, the number of estimates from each sensor, standard error for each quarterly estimate, spatial coordinates, and date are all included in the file.
 
 ## Plotting
-Figures were created using the above dataset in conjunction with CDFW county shapefiles, which include state waters within counties. Maximum annual canopy area is defined as the quarter each year with the greatest canopy area.
+Figures were created using the above dataset in conjunction with CDFW county shapefiles, which include state waters within counties. 
 
 ```{r Load county shapefiles and match with Landsast data, include = FALSE}
 # The loop below takes 5 minutes to run, so I have commented it out and read in the output at the end.
@@ -228,7 +228,7 @@ canopy_area_tall$km2 = canopy_area_tall$m2 / 1e6
 
 
 # Figures
-```{r quarterly canopy area in each county, fig.height = 2}
+```{r quarterly canopy area in each county, fig.height = 3}
 # All quarters
 ##Del Norte
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Del Norte'),], aes(x = year.qtr, y = km2)) +
@@ -281,9 +281,9 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Marin'),], aes(x = yea
    my.theme
 ```
 
-Figure 1. Quarterly canopy area in state waters in coastal counties as estimated from Landsat satellites (Santa Barbara Coastal LTER et al. 2021). Canopy area does not distinguish between bull kelp and giant kelp. Data is updated through the last quarter of 2020.
+Figure 1. Quarterly canopy area in state waters in coastal counties as estimated from Landsat satellites (Santa Barbara Coastal LTER et al. 2021). Canopy area does not distinguish between bull kelp and giant kelp. Data is updated through the last quarter of 2020. Missing points indicate missing data.
 
-```{r Annual max canopy area in each county, fig.height = 2}
+```{r Annual max canopy area in each county, fig.height = 2, include = FALSE}
 # Maximum canopy area. in each year and county, find the maximum km2 value.
 canopy_area_max_annual <- canopy_area_tall %>%
   group_by(county, year) %>%
@@ -338,42 +338,9 @@ ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Marin'),],
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Marin County Max Annual') +
    my.theme 
+
+# Figure 2. Annual maximum canopy area (measured quarterly) in state waters in coastal counties as estimated from Landsat satellites (Santa Barbara Coastal LTER et al. 2021). Canopy area does not distinguish between bull kelp and giant kelp. Data is updated through the last quarter of 2020.
 ```
-
-Figure 2. Annual maximum canopy area (measured quarterly) in state waters in coastal counties as estimated from Landsat satellites (Santa Barbara Coastal LTER et al. 2021). Canopy area does not distinguish between bull kelp and giant kelp. Data is updated through the last quarter of 2020.
-
-```{r Annual max canopy area in all northern counties, fig.height = 9}
-
-``` 
-
-# Tables
-
-```{r which quarter has the annual maximum in each county?, echo = FALSE}
-qtr_max_county <- canopy_area_tall %>%
-  group_by(county, year) %>% # group by county and year
-  slice(which.max(km2)) %>% # find the maximum km2 value
-  subset(select = -year.qtr) %>% # remove year.qtr col
-  transmute(quarter = qtr*4+1) # change quarters from decimals to 1,2,3,4
-
-# Count how many quarters are the max per year per county
-n_max_qtrs_county <- qtr_max_county %>%
-  group_by(county, quarter) %>%
-  summarise(number = length(quarter), .groups = 'drop') %>%
-  filter(county %in% c('Del Norte', 'Humboldt', 'Mendocino', 'Sonoma'))
-
-
-kable(n_max_qtrs_county
-      , digits = 2
-      , booktabs = TRUE
-      , row.names = FALSE
-      , align = 'c'
-      , linesep = ''
-      , caption = 'Number of quarters with maximum annual canopy area'
-) %>%
-  kable_styling(latex_options = 'hold_position') # otherwise the table moves in the pdf
-      
-```
-
 
 # Literature Cited
 Santa Barbara Coastal LTER, T. Bell, K. Cavanaugh, and D. Siegel. 2021. SBC LTER: Time series of quarterly NetCDF files of kelp biomass in the canopy from Landsat 5, 7 and 8, since 1984 (ongoing) ver 14. Environmental Data Initiative. https://doi.org/10.6073/pasta/89b63c4b49b80fb839613e9d389d9902 (Accessed 2021-11-24).
