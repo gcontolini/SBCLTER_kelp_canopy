@@ -14,6 +14,8 @@ editor_options:
 ---
 
 ```{r setup, include = FALSE}
+# setting git credentials bc I always forget: git config --global user.name "gcontolini"
+
 knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
 options(knitr.table.format = "latex")
 
@@ -235,7 +237,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Del Norte'),], aes(x =
    geom_point() +
    geom_line() +
    scale_x_continuous(breaks = 1984:2021, expand = c(0,0)) +
-   scale_y_continuous(breaks = seq(0, 0.015, 0.0025), expand = c(0.05,0)) +
+   scale_y_continuous(breaks = seq(0, 0.015, 0.0025), expand = c(0.02,0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Del Norte County Quarterly') +
    my.theme
@@ -245,7 +247,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Humboldt'),], aes(x = 
    geom_point() +
    geom_line() +
    scale_x_continuous(breaks = 1984:2021, expand = c(0,0)) +
-   #scale_y_continuous(limits = c(0,0.0225), breaks = seq(0, 0.025, 0.0025), expand = c(0.005,0)) +
+   scale_y_continuous(expand = c(0.02,0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Humboldt County Quarterly') +
    my.theme
@@ -255,7 +257,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Mendocino'),], aes(x =
    geom_point() +
    geom_line() +
    scale_x_continuous(breaks = 1984:2021, expand = c(0,0)) +
-   #scale_y_continuous(limits = c(0,3), breaks = seq(0, 3, 0.25), expand = c(0.001,0)) +
+   scale_y_continuous(expand = c(0.02,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Mendocino County Quarterly') +
    my.theme
@@ -265,7 +267,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Sonoma'),], aes(x = ye
    geom_point() +
    geom_line() +
    scale_x_continuous(breaks = 1984:2021, expand = c(0,0)) +
-   scale_y_continuous(limits = c(0,2), breaks = seq(0, 2, 0.25), expand = c(0.001,0)) +
+   scale_y_continuous(limits = c(0,2), breaks = seq(0, 2, 0.25), expand = c(0.02,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Sonoma County Quarterly') +
    my.theme
@@ -275,7 +277,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Marin'),], aes(x = yea
    geom_point() +
    geom_line() +
    scale_x_continuous(breaks = 1984:2021, expand = c(0,0)) +
-   scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(0.001,0)) +
+   scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(0.02,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Marin County Quarterly') +
    my.theme
