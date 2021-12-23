@@ -17,6 +17,7 @@ editor_options:
 knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
 options(knitr.table.format = "latex")
 # how to assign username: git config --global user.name "gcontolini"
+# how to add commit message in terminal: write message then press esc and :wq to save and exit
 
 #### Load libraries ####
 library(ggplot2) # plotting
@@ -24,12 +25,10 @@ library(ggpubr) # arranging plots
 library(scales) # let's you put commas in the axis labels for thousands
 library(dplyr) # data manipulations
 library(tidyr) # data cleaning
-library(readr) # better data reading?
-# library(reshape2) 
-# library(Rmisc)
+library(readr) # better data reading
 library(ncdf4)
-library(sf) # ... mapping? 
-library(sp) # dnno
+library(sf) # special features. probably mapping. 
+library(sp) # spatial data
 library(lubridate) # manipulating dates easily
 library(knitr) # to knit the Rmd file
 library(kableExtra) # pretty tables
@@ -232,6 +231,7 @@ canopy_area_tall$km2 = canopy_area_tall$m2 / 1e6
 ```{r quarterly canopy area in each county, fig.height = 3}
 # All quarters
 expand.a.little = 0.02
+
 ##Del Norte
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Del Norte'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
@@ -283,13 +283,16 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Marin'),], aes(x = yea
    my.theme
 ```
 
-Figure 1. Quarterly canopy area in state waters in coastal counties as estimated from Landsat satellites (Santa Barbara Coastal LTER et al. 2021). Canopy area does not distinguish between bull kelp and giant kelp. Data is updated through the last quarter of 2020.
+Figure 1. Quarterly canopy area in state waters in coastal counties as estimated from Landsat satellites (Santa Barbara Coastal LTER et al. 2021). Canopy area does not distinguish between bull kelp and giant kelp.  Missing values indicate no data is available. Data is updated through the last quarter of 2020.
 
 ```{r Annual max canopy area in each county, fig.height = 2}
 # Maximum canopy area. in each year and county, find the maximum km2 value.
 canopy_area_max_annual <- canopy_area_tall %>%
   group_by(county, year) %>%
   summarise(max.km2 = max(km2, na.rm = T), .groups = 'drop')
+
+# 1987 and 1992 Marin had no data. Change -Inf to NA for those years so it plots better.
+canopy_area_max_annual$max.km2[which(canopy_area_max_annual$max.km2 < 0)] <- NA
 
 ##Del Norte
 ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Del Norte'),], aes(x = year, y = max.km2)) +
@@ -316,7 +319,7 @@ ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Mendocino'
    geom_point() +
    geom_line() +
    scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
-   #scale_y_continuous(breaks = seq(0, 0.015, 0.0025), expand = c(0.05,0)) +
+   scale_y_continuous(expand = c(expand.a.little,0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Mendocino County Max Annual') +
    my.theme 
@@ -326,7 +329,7 @@ ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Sonoma'),]
    geom_point() +
    geom_line() +
    scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
-   #scale_y_continuous(breaks = seq(0, 0.015, 0.0025), expand = c(0.05,0)) +
+   scale_y_continuous(expand = c(expand.a.little,0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Sonoma County Max Annual') +
    my.theme 
@@ -336,13 +339,13 @@ ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Marin'),],
    geom_point() +
    geom_line() +
    scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
-   #scale_y_continuous(breaks = seq(0, 0.015, 0.0025), expand = c(0.05,0)) +
+   scale_y_continuous(expand = c(expand.a.little, 0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Marin County Max Annual') +
    my.theme 
 ```
 
-Figure 2. Annual maximum canopy area (measured quarterly) in state waters in coastal counties as estimated from Landsat satellites (Santa Barbara Coastal LTER et al. 2021). Canopy area does not distinguish between bull kelp and giant kelp. Data is updated through the last quarter of 2020.
+Figure 2. Annual maximum canopy area (measured quarterly) in state waters in coastal counties as estimated from Landsat satellites (Santa Barbara Coastal LTER et al. 2021). Canopy area does not distinguish between bull kelp and giant kelp. Missing values indicate no data is available. Data is updated through the last quarter of 2020.
 
 ```{r Annual max canopy area in all northern counties, fig.height = 9}
 
