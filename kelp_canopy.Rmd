@@ -17,6 +17,7 @@ editor_options:
 knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
 options(knitr.table.format = "latex")
 # how to assign username: git config --global user.name "gcontolini"
+# how to add, commit, and add message in terminal: git commit -am "commit message"
 # how to add commit message in terminal: write message then press esc and :wq to save and exit
 
 #### Load libraries ####
@@ -355,16 +356,17 @@ Figure 2. Annual maximum canopy area (measured quarterly) in state waters in coa
 
 ```{r which quarter has the annual maximum in each county?, echo = FALSE}
 qtr_max_county <- canopy_area_tall %>%
-  group_by(county, year) %>% # group by county and year
-  slice(which.max(km2)) %>% # find the maximum km2 value
+  group_by(county, year) %>%     # group by county and year
+  slice(which.max(km2)) %>%      # find the maximum km2 value
   subset(select = -year.qtr) %>% # remove year.qtr col
-  transmute(quarter = qtr*4+1) # change quarters from decimals to 1,2,3,4
+  transmute(quarter = qtr*4+1)   # change quarters from decimals to 1,2,3,4
 
 # Count how many quarters are the max per year per county
 n_max_qtrs_county <- qtr_max_county %>%
   group_by(county, quarter) %>%
   summarise(number = length(quarter), .groups = 'drop') %>%
-  filter(county %in% c('Del Norte', 'Humboldt', 'Mendocino', 'Sonoma'))
+  filter(county %in% c('Del Norte', 'Humboldt', 'Mendocino', 'Sonoma')) %>%
+  complete(county, quarter, fill = list(number = 0)) # sets missing quarters to number = 0
 
 
 kable(n_max_qtrs_county
