@@ -4,6 +4,7 @@ author: "Gina Contolini"
 date: Updated `r format(Sys.time(), '%d %B %Y')`
 output: 
   html_document:
+     fig_crop: FALSE
 header-includes:
 - \usepackage{caption}
 - \captionsetup[figure]{labelformat=empty}
@@ -14,7 +15,11 @@ editor_options:
 ---
 
 ```{r setup, include = FALSE}
-# setting git credentials bc I always forget: git config --global user.name "gcontolini"
+# to create a PDF output, change "output:html_document" to "output: pdf_document" in the header above.
+# note about fig_crop:FALSE. This makes the PDF output look nicer by putting spaces btwn the figures instead of smashing them as close together as possible. It doesn't do anything to the HTML output as far as I can tell.
+# how to assign username: git config --global user.name "gcontolini"
+# how to add, commit, and add message in terminal: git commit -am "commit message"
+# how to write commit message in terminal: write message then press esc and :wq to save and exit
 
 knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
 options(knitr.table.format = "latex")
@@ -232,7 +237,7 @@ canopy_area_tall$km2 = canopy_area_tall$m2 / 1e6
 # Figures
 ```{r quarterly canopy area in each county, fig.height = 3}
 # All quarters
-##Del Norte
+## Del Norte
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Del Norte'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
