@@ -309,7 +309,7 @@ ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Humboldt')
    geom_point() +
    geom_line() +
    scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
-   scale_y_continuous(breaks = seq(0, 0.015, 0.0025), expand = c(expand.a.little,0)) +
+   scale_y_continuous(expand = c(expand.a.little,0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Humboldt County Max Annual') +
    my.theme 
