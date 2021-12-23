@@ -1,0 +1,11 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/848329/b3b9504995434ae687ac9666967d8d3d
+bundleId: https://api.rpubs.com/api/v1/document/848329/b3b9504995434ae687ac9666967d8d3d
+url: http://rpubs.com/gcontolini/848329
+when: 1640278565.61013
+lastSyncTime: 1640278565.61014
