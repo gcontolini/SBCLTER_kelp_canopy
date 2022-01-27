@@ -89,7 +89,7 @@ Data are organized into a single NetCDF file and contain the quarterly area mean
 Figures were created using the above dataset in conjunction with CDFW county shapefiles, which include state waters within counties. 
 
 ```{r Load county shapefiles and match with Landsast data, include = FALSE}
-# The loop below takes 5 minutes to run, so I have commented it out and read in the output at the end.
+# The loop below does not run in RStudio because it requires the NetCDF file with all the geospatial data, and the RStudio Cloud server does not support files that large. What I am doing is downloading the latest NetCDF file from the EDI repository () and then running this code on my local machine. The output is saved as a .csv and that is what is used here. I have to do it this way in order to use GitHub because GitHub integration with RStudio is not supported on state computers. 
 
 # #### Kelp Biomass and Area Dynamics of state waters by county ####
 # #Load Admin Bed Shapefile
