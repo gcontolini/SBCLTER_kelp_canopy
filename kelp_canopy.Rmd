@@ -86,7 +86,7 @@ Data are organized into a single NetCDF file and contain the quarterly area mean
 ## Plotting
 Figures were created using the above dataset in conjunction with CDFW Administrative Kelp Bed shapefiles. 
 
-```{r Load Landsast data into AKB shapefiles, include = FALSE}
+```{r Load Landsast data into fishing block shapefiles, include = FALSE}
 # ## THIS HAS ALL BEEN COMMENTED BECAUSE IT IS JUST THE WORK THAT LED TO THE CSVS I'M USING FOR THE FIGS
 # 
 # # info on the data: https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.74
