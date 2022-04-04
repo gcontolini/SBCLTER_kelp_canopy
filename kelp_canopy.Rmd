@@ -1,5 +1,5 @@
 ---
-title: "Kelp Canopy Cover Summary Using CDFW County Shapefiles"
+title: "Kelp Canopy Cover Summary Using Administrative Kelp Bed Shapefiles"
 author: "Gina Contolini"
 date: Updated `r format(Sys.time(), '%d %B %Y')`
 output: 
@@ -70,34 +70,44 @@ my.theme = theme(
 # edible = read.csv('EdibleSeaweedHarvest_rfm_1-28-21.csv') # edible seaweed harvest. This one has months. That is important.
 # kelp = read.csv('KelpHarvest_vers2_rfm_1-28-21.csv') # kelp harvest
 ```
+For more reports like this, visit my RPubs user profile: https://rpubs.com/gcontolini
 
 # Objective
-Summarize California kelp abundance trends from Landsat satellite imagery (SBC LTER et al. 2020) by county using shapefiles of state waters delineated by coastal counties.
+Summarize California kelp abundance trends from Landsat satellite imagery (SBC LTER et al. 2022) by Administrative Kelp Bed (AKB) using CDFW AKB shapefiles, available at: https://map.dfg.ca.gov/arcgis/rest/services/Project_Marine/Marine_Management/MapServer/13.
 
 # Methods
 ## Satellite imagery
-Kelp canopy area data are from the Santa Barbara Coastal Long-term Ecological Research Landsat satellite data series updated through all four quarters of 2020 (Santa Barbara Coastal LTER et al. 2021; https://doi.org/10.6073/pasta/89b63c4b49b80fb839613e9d389d9902). The data represents a time series of canopy area of giant kelp, *Macrocystis pyrifera*, and bull kelp, *Nereocystis luetkeana* derived from Landsat 5 Thematic Mapper (TM), Landsat 7 Enhanced Thematic Mapper Plus (ETM+), and Landsat 8 Operational Land Imager (OLI) satellite imagery, along with relevant metadata. The kelp canopy is composed of the portions of fronds and stipes floating on the surface of the water. Canopy area (m) data are given for individual 30 x 30 meter pixels for all coastal areas of California, including the Northern and Southern Channel Islands.
+Kelp canopy area data are from the Santa Barbara Coastal Long-term Ecological Research Landsat satellite data series updated through all four quarters of 2021 (Santa Barbara Coastal LTER et al. 2022; https://portal.edirepository.org/nis/mapbrowse?scope=knb-lter-sbc&identifier=74&revision=15). The data represents a time series of canopy area of giant kelp, *Macrocystis pyrifera*, and bull kelp, *Nereocystis luetkeana* derived from Landsat 5 Thematic Mapper (TM), Landsat 7 Enhanced Thematic Mapper Plus (ETM+), and Landsat 8 Operational Land Imager (OLI) satellite imagery, along with relevant metadata. The kelp canopy is composed of the portions of fronds and stipes floating on the surface of the water. Canopy area (m) data are given for individual 30 x 30 meter pixels for all coastal areas of California, including the Northern and Southern Channel Islands.
 
 Data were derived from the three Landsat sensors listed above. Observations are made on a 16 day repeat cycle for each instrument, but the temporal coverage is irregular because of cloud cover, instrument failure, and the mission length of each sensor (TM: 1984 – 2011, ETM+: 1999 – present, OLI: 2013 – present). Estimates of canopy area are derived from the fractional cover of kelp canopy determined from satellite surface reflectance. Updates to the 2021 dataset include correcting cloud reflectance errors and improving the landmasking procedure, which increased the detection of kelp especially in the northern region. The different Landsat sensors were calibrated to each other using simulated Landsat data derived from hyperspectral imagery. Missing data due to the ETM+ scan line corrector error were filled using a synchrony-based gap filling method. 
 
 Data are organized into a single NetCDF file and contain the quarterly area means for each Landsat pixel across the three sensors. Relevant metadata such as number of Landsat estimates from which the mean was derived, the number of estimates from each sensor, standard error for each quarterly estimate, spatial coordinates, and date are all included in the file.
 
 ## Plotting
-Figures were created using the above dataset in conjunction with CDFW county shapefiles, which include state waters within counties. Maximum annual canopy area is defined as the quarter each year with the greatest canopy area.
+Figures were created using the above dataset in conjunction with CDFW Administrative Kelp Bed shapefiles. 
 
-```{r Load county shapefiles and match with Landsast data, include = FALSE}
-# The loop below takes 5 minutes to run, so I have commented it out and read in the output at the end.
-
-# #### Kelp Biomass and Area Dynamics of state waters by county ####
+```{r Load Landsast data into AKB shapefiles, include = FALSE}
+# ## THIS HAS ALL BEEN COMMENTED BECAUSE IT IS JUST THE WORK THAT LED TO THE CSVS I'M USING FOR THE FIGS
+# 
+# # info on the data: https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.74
+# 
+# #Kelp Biomass and Area Dynamics of CDFW Admin Beds
+# #Tom Bell
+# #Novemeber 18, 2020
+# # **Please let me know if you need help with any step!**
+# 
 # #Load Admin Bed Shapefile
 # #Place the lat/lon version of the Admin Bed shapefile in your working directory
-# county_waters <- st_read('shapefiles/MAN_CA_CountyStateWaters.shp') 
+# # admin_beds <- st_read('KelpAdmin_latlong/KelpAdmin_latllong.shp')
+# admin_beds = st_read('MAN_CA_KelpAdmin.shx') # wait I changed it to .shx and now it works??
+# counties <- st_read('MAN_CA_CountyStateWaters.shx')
 # 
-# #Open Kelp NetCDF File and put in your working directory.
-# #The file can be found here: https://portal.edirepository.org/nis/mapbrowse?scope=knb-lter-sbc&identifier=74
-# nc_data <- nc_open('LandsatkelpBiomass_2021_v2_withmetadata.nc')
-# # not sure yet how to open it in directly from a URL.
-# # apparently this file is too big for the RStudio Cloud server. So we can't use the server. Or wait we just have to use a static .csv.
+# 
+# #Open Kelp NetCDF File
+# #Place the NetCDF file in your working directory
+# #The file can be found here: https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.74
+# # nc_data_2021 <- nc_open('kelpCanopyFromLandsat_2021.nc') # old data
+# nc_data <- nc_open('LandsatkelpBiomass_2021_v2_withmetadata.nc') # through 2021 data
 # 
 # #Load necessary variables from NetCDF File
 # lon <- ncvar_get(nc_data, 'longitude')
@@ -112,54 +122,55 @@ Figures were created using the above dataset in conjunction with CDFW county sha
 # 
 # #Create output matrices
 # LN = dim(quarters)
-# output_biomass <- matrix(ncol=LN, nrow=22)
-# output_area <- matrix(ncol=LN, nrow=22)
+# output_biomass <- matrix(ncol=LN, nrow=87)
+# output_area <- matrix(ncol=LN, nrow=87)
 # 
-# # This for() loop takes 5 mins. Sorry. You could run it once and then save the output, but then it wouldn't be linked to the SBCLTER data repository anymore. 
-# for(i in 1:22){
+# for(i in 1:87){
 # 
 #   #Pull shapefile coordinates from each admin bed
-#   if (i == 17) {
-#     county_coords <- as.data.frame(county_waters[i,]$geometry[[1]][[30]][[1]])
+#   #I had to make hard code an addition here for Bed 86 as I am not as fluent in geospatial analysis in R as I am in Matlab
+#   #The issue is that the shaprefile geometry is divided into multiple parts when there are NaNs in the lat/lon columns
+#   if (i == 86) {
+#     bed_coords <- as.data.frame(admin_beds[i,]$geometry[[1]][[2]][[1]])
 #   } else {
-#     county_coords <- as.data.frame(county_waters[i,]$geometry[[1]][[1]][[1]])
+#     bed_coords <- as.data.frame(admin_beds[i,]$geometry[[1]][[1]][[1]])
 #   }
 # 
 #   #Find the kelp coordinates that exist inside each admin bed polygon
-#   kelp_poly <- point.in.polygon(lon, lat, county_coords$V1, county_coords$V2, mode.checked = FALSE)
+#   kelp_poly <- point.in.polygon(lon, lat, bed_coords$V1, bed_coords$V2, mode.checked=FALSE)
 #   TF <- which(kelp_poly %in% 1)
 # 
 #   #Extract biomass and area data for each polygon
-#   bio_county <- biomass[TF,]
-#   area_county <- area[TF,]
+#   bio_bed <- biomass[TF,]
+#   area_bed <- area[TF,]
 # 
 #   #Sum biomass and area
-#   bio_county_sum <- colSums(bio_county, na.rm = TRUE, dims = 1)
-#   area_county_sum <- colSums(area_county, na.rm = TRUE, dims = 1)
+#   bio_bed_sum <- colSums(bio_bed, na.rm = TRUE, dims = 1)
+#   area_bed_sum <- colSums(area_bed, na.rm = TRUE, dims = 1)
 # 
 #   #Remove Columns w/ >25% No Data (Clouds)
 #   #Find all NA values (missing data) in the kelp dataset
-#   bio_county_NA = is.na(bio_county)
-#   area_county_NA = is.na(area_county)
+#   bio_bed_NA = is.na(bio_bed)
+#   area_bed_NA = is.na(area_bed)
 # 
 #   #Find number of kelp pixels in the polygon
-#   L = dim(bio_county)
+#   L = dim(bio_bed)
 # 
 #   #Calculate the percent of NAs for each season
-#   bio_county_NA_percent <- colSums(bio_county_NA, na.rm = TRUE)/L[1]
-#   area_county_NA_percent <- colSums(area_county_NA, na.rm = TRUE)/L[1]
+#   bio_bed_NA_percent <- colSums(bio_bed_NA, na.rm = TRUE)/L[1]
+#   area_bed_NA_percent <- colSums(area_bed_NA, na.rm = TRUE)/L[1]
 # 
 #   #Find seasons with greater than 20% missing data
-#   NA_GT <- which(bio_county_NA_percent > 0.25)
-#   NA_GTA <- which(area_county_NA_percent > 0.25)
+#   NA_GT <- which(bio_bed_NA_percent > 0.25)
+#   NA_GTA <- which(area_bed_NA_percent > 0.25)
 # 
 #   #Set seasons with greater than 20% missing data to -999
-#   bio_county_sum[NA_GT] = -999
-#   area_county_sum[NA_GTA] = -999
+#   bio_bed_sum[NA_GT] = -999
+#   area_bed_sum[NA_GTA] = -999
 # 
 #   #Add summed kelp canopy data to matrix
-#   output_biomass[i,] <- bio_county_sum
-#   output_area[i,] <- area_county_sum
+#   output_biomass[i,] <- bio_bed_sum
+#   output_area[i,] <- area_bed_sum
 # 
 # }
 # 
@@ -173,22 +184,26 @@ Figures were created using the above dataset in conjunction with CDFW county sha
 # output2_area <- rbind(quarterst, output_area)
 # output3_area <- rbind(yearst, output2_area)
 # 
-# #Add county to output matrices
-# CountiesNA <- county_waters$County
-# Counties <- c(rep(NA,2),CountiesNA)
-# output4_biomass <- cbind(Counties, output3_biomass)
-# output4_area <- cbind(Counties, output3_area)
+# #Add Admin Bed Number to output matrices
+# BedsNA <- admin_beds$KelpBed
+# Beds <- c(rep(NA,2),BedsNA)
+# output4_biomass <- cbind(Beds, output3_biomass)
+# output4_area <- cbind(Beds, output3_area)
+# 
+# #Write CSV of kelp biomass time series for each Admin Bed
+# write.csv(output4_biomass, 'kelp_biomass_output_2022.csv', row.names = FALSE)
+# write.csv(output4_area, 'kelp_area_output_2022.csv', row.names = FALSE)
 
-output4_area <- read_csv("kelp_canopy_output_ 2021-11-24 .csv")
+# The above just organizes data into AKBs, which can only be done in a directory that can hold the large NetCDF file (>100 MB), which RStudio Cloud cannot. So I ran that code on my local machine and now I will read in the resulting .csv:
 
+output4_area <- read.csv('kelp_area_output_2022.csv')
+
+# I believe we only got countywide data directly from T Bell.
 ```
 
 ```{r admin kelp county canopy area tidying, include = FALSE}
 canopy_area <- output4_area %>%
    as.data.frame()
-
-# remove first col which is just row numbers
-canopy_area[,1] <- NULL
 
 # I want to plot area vs. year.quarter. This means year.quarter needs to be in a column. Currently all cols are separate. This is called wide format. I want tall format.
 
@@ -196,14 +211,14 @@ canopy_area[,1] <- NULL
 names(canopy_area) <- paste(canopy_area[1,], canopy_area[2,], sep='.') # paste years with quarters to make each col have a unique name.
 
 # rename the ID col for counties
-names(canopy_area)[1] <- "county"
+names(canopy_area)[1] <- "AKB"
 
 # remove first 2 rows since they are not canopy data, just IDs--year and quarter
 canopy_area <- canopy_area[-c(1:2),] 
 
 # convert to tall format
 canopy_area_tall <- canopy_area %>% 
-   pivot_longer(-'county', names_to = 'year.qtr', values_to = 'm2')
+   pivot_longer(-'AKB', names_to = 'year.qtr', values_to = 'm2')
 
 # separate year and quarter into two cols
 canopy_area_tall <- canopy_area_tall %>%
@@ -230,160 +245,189 @@ canopy_area_tall$m2[which(canopy_area_tall$m2 < 0)] = NA
 canopy_area_tall$km2 = canopy_area_tall$m2 / 1e6
 ```
 
-
 # Figures
-```{r quarterly canopy area in each county, fig.height = 3}
+```{r kelp canopy area by AKB, fig.height = 3, fig.width = 10}
+
 # All quarters
 expand.a.little = 0.02
 
-##Del Norte
-ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Del Norte'),], aes(x = year.qtr, y = km2)) +
-   geom_point() +
-   geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
-   scale_y_continuous(breaks = seq(0, 0.015, 0.0025), expand = c(expand.a.little,0)) +
-   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
-   ggtitle('Del Norte County Quarterly') +
-   my.theme
-
-## Humboldt
-ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Humboldt'),], aes(x = year.qtr, y = km2)) +
-   geom_point() +
-   geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
-   scale_y_continuous(limits = c(0,0.0225), breaks = seq(0, 0.025, 0.0025), expand = c(expand.a.little,0)) +
-   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
-   ggtitle('Humboldt County Quarterly') +
-   my.theme
-
-## Mendocino
-ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Mendocino'),], aes(x = year.qtr, y = km2)) +
-   geom_point() +
-   geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
-   scale_y_continuous(limits = c(0,3), breaks = seq(0, 3, 0.25), expand = c(expand.a.little,0)) +
-   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
-   ggtitle('Mendocino County Quarterly') +
-   my.theme
-
-## Sonoma
-ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Sonoma'),], aes(x = year.qtr, y = km2)) +
-   geom_point() +
-   geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
-   scale_y_continuous(limits = c(0,2), breaks = seq(0, 2, 0.25), expand = c(expand.a.little,0)) +
-   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
-   ggtitle('Sonoma County Quarterly') +
-   my.theme
-
-## Marin
-ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Marin'),], aes(x = year.qtr, y = km2)) +
-   geom_point() +
-   geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
-   scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
-   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
-   ggtitle('Marin County Quarterly') +
-   my.theme
-```
-
-Figure 1. Quarterly canopy area in state waters in coastal counties as estimated from Landsat satellites (Santa Barbara Coastal LTER et al. 2021). Canopy area does not distinguish between bull kelp and giant kelp.  Missing values indicate no data is available. Data is updated through the last quarter of 2020.
-
-```{r Annual max canopy area in each county, fig.height = 2}
-# Maximum canopy area. in each year and county, find the maximum km2 value.
-canopy_area_max_annual <- canopy_area_tall %>%
-  group_by(county, year) %>%
-  summarise(max.km2 = max(km2, na.rm = T), .groups = 'drop')
-
-# 1987 and 1992 Marin had no data. Change -Inf to NA for those years so it plots better.
-canopy_area_max_annual$max.km2[which(canopy_area_max_annual$max.km2 < 0)] <- NA
-
-##Del Norte
-ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Del Norte'),], aes(x = year, y = max.km2)) +
-   geom_point() +
-   geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
-   scale_y_continuous(breaks = seq(0, 0.015, 0.0025), expand = c(expand.a.little,0)) +
-   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
-   ggtitle('Del Norte County Max Annual') +
-   my.theme 
-
-## Humboldt
-ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Humboldt'),], aes(x = year, y = max.km2)) +
-   geom_point() +
-   geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
-   scale_y_continuous(expand = c(expand.a.little,0)) +
-   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
-   ggtitle('Humboldt County Max Annual') +
-   my.theme 
-
-## Mendocino
-ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Mendocino'),], aes(x = year, y = max.km2)) +
-   geom_point() +
-   geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
-   scale_y_continuous(expand = c(expand.a.little,0)) +
-   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
-   ggtitle('Mendocino County Max Annual') +
-   my.theme 
-
-## Sonoma
-ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Sonoma'),], aes(x = year, y = max.km2)) +
-   geom_point() +
-   geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
-   scale_y_continuous(expand = c(expand.a.little,0)) +
-   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
-   ggtitle('Sonoma County Max Annual') +
-   my.theme 
-
-## Marin
-ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Marin'),], aes(x = year, y = max.km2)) +
+## AKB 312, Crescent City
+ggplot(canopy_area_tall[which(canopy_area_tall$AKB == '312'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
    scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
    scale_y_continuous(expand = c(expand.a.little, 0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
-   ggtitle('Marin County Max Annual') +
-   my.theme 
+   ggtitle('AKB 312 Quarterly') +
+   my.theme
+
+## AKB 311
+ggplot(canopy_area_tall[which(canopy_area_tall$AKB == '311'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_y_continuous(expand = c(expand.a.little, 0)) +
+   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('AKB 311 Quarterly') +
+   my.theme
+
+## AKB 310
+ggplot(canopy_area_tall[which(canopy_area_tall$AKB == '310'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_y_continuous(expand = c(expand.a.little, 0)) +
+   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('AKB 310 Quarterly') +
+   my.theme
+
+## AKB 309
+ggplot(canopy_area_tall[which(canopy_area_tall$AKB == '309'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_y_continuous(expand = c(expand.a.little, 0)) +
+   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('AKB 309 Quarterly') +
+   my.theme
+
+## AKB 308
+ggplot(canopy_area_tall[which(canopy_area_tall$AKB == '308'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_y_continuous(breaks = seq(0, 0.04, 0.01), expand = c(expand.a.little,0)) +
+   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('AKB 308 Quarterly') +
+   my.theme
+
+## AKB 307, Fort Bragg
+ggplot(canopy_area_tall[which(canopy_area_tall$AKB == '307'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_y_continuous(expand = c(expand.a.little, 0)) +
+   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('AKB 307 Quarterly') +
+   my.theme
+
+## AKB 306
+ggplot(canopy_area_tall[which(canopy_area_tall$AKB == '306'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_y_continuous(expand = c(expand.a.little, 0)) +
+   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('AKB 306 Quarterly') +
+   my.theme
+
+## AKB 305
+ggplot(canopy_area_tall[which(canopy_area_tall$AKB == '305'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_y_continuous(expand = c(expand.a.little, 0)) +
+   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('AKB 305 Quarterly') +
+   my.theme
+
+## AKB 304
+ggplot(canopy_area_tall[which(canopy_area_tall$AKB == '304'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_y_continuous(expand = c(expand.a.little, 0)) +
+   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('AKB 304 Quarterly') +
+   my.theme
+
+## AKB 303
+ggplot(canopy_area_tall[which(canopy_area_tall$AKB == '303'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_y_continuous(expand = c(expand.a.little, 0)) +
+   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('AKB 303 Quarterly') +
+   my.theme
+
+## AKB 302
+ggplot(canopy_area_tall[which(canopy_area_tall$AKB == '302'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_y_continuous(expand = c(expand.a.little, 0)) +
+   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('AKB 302 Quarterly') +
+   my.theme
+
+## AKB 301
+ggplot(canopy_area_tall[which(canopy_area_tall$AKB == '301'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_y_continuous(expand = c(expand.a.little, 0)) +
+   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('AKB 301 Quarterly') +
+   my.theme
 ```
 
-Figure 2. Annual maximum canopy area (measured quarterly) in state waters in coastal counties as estimated from Landsat satellites (Santa Barbara Coastal LTER et al. 2021). Canopy area does not distinguish between bull kelp and giant kelp. Missing values indicate no data is available. Data is updated through the last quarter of 2020.
-
-```{r Annual max canopy area in all northern counties, fig.height = 9}
-
-``` 
+Figure 1. Quarterly canopy area in Administrative Kelp Beds as estimated from Landsat satellites (Santa Barbara Coastal LTER et al. 2022). Canopy area does not distinguish between bull kelp and giant kelp.  Missing values indicate no data is available. Data is updated through the last quarter of 2021.
 
 # Tables
 
-```{r which quarter has the annual maximum in each county?, echo = FALSE}
-qtr_max_county <- canopy_area_tall %>%
-  group_by(county, year) %>%     # group by county and year
+```{r exploring which quarters have the annual maximum, echo = FALSE}
+qtr_max_AKB <- canopy_area_tall %>%
+  group_by(AKB, year) %>%        # group by AKB and year
   slice(which.max(km2)) %>%      # find the maximum km2 value
   subset(select = -year.qtr) %>% # remove year.qtr col
   transmute(quarter = qtr*4+1)   # change quarters from decimals to 1,2,3,4
 
-# Count how many quarters are the max per year per county
-n_max_qtrs_county <- qtr_max_county %>%
-  group_by(county, quarter) %>%
+# Count how many quarters are the max per year per AKB
+n_max_qtrs_AKB <- qtr_max_AKB %>%
+  group_by(AKB, quarter) %>%
   summarise(number = length(quarter), .groups = 'drop') %>%
-  filter(county %in% c('Del Norte', 'Humboldt', 'Mendocino', 'Sonoma')) %>%
-  complete(county, quarter, fill = list(number = 0)) # sets missing quarters to number = 0
+  filter(AKB > 300) %>%
+  complete(AKB, quarter, fill = list(number = 0)) # sets missing quarters to number = 0
 
+# kable(n_max_qtrs_AKB
+#       , digits = 2
+#       , booktabs = TRUE
+#       , row.names = FALSE
+#       , align = 'c'
+#       , linesep = ''
+#       , caption = 'Number of quarters with maximum annual canopy area'
+# ) %>%
+#   kable_styling(latex_options = 'hold_position') # otherwise the table moves in the pdf
 
-kable(n_max_qtrs_county
-      , digits = 2
+# which quarters had the greatest canopy area in 2021?
+# I want to identify the quarter in each of the 300-level AKBs that had the max km2 value in 2021
+max_2021_km2 <- canopy_area_tall %>%
+  filter(year == 2021) %>%
+  filter(AKB > 300) %>% # this shows km2 values for all 300-level AKBs in 2021. What is the max for 2021?
+  group_by(AKB) %>%
+  summarise(max.km2 = max(km2, na.rm = T)) # this gives the max km2 values. which quarter are they in?
+      
+km2_qtrs_300AKBs <- canopy_area_tall %>%
+  filter(year == 2021 & AKB > 300) %>%
+  #filter(km2 %in% max_2021_km2$max.km2) %>% # This shows only the quarters with the annual maxima
+  mutate(quarter = qtr*4+1) %>%
+  subset(select = c('AKB','year','quarter','km2')) %>%
+  arrange(desc(AKB)) %>%
+  relocate(year) # puts year as the first col
+
+kable(km2_qtrs_300AKBs
+      #, digits = 2
       , booktabs = TRUE
       , row.names = FALSE
       , align = 'c'
       , linesep = ''
-      , caption = 'Number of quarters with maximum annual canopy area'
+      , caption = 'Quarterly kelp canopy area in 2021 only'
 ) %>%
   kable_styling(latex_options = 'hold_position') # otherwise the table moves in the pdf
-      
+
 ```
 
 
 # Literature Cited
-Santa Barbara Coastal LTER, T. Bell, K. Cavanaugh, and D. Siegel. 2021. SBC LTER: Time series of quarterly NetCDF files of kelp biomass in the canopy from Landsat 5, 7 and 8, since 1984 (ongoing) ver 14. Environmental Data Initiative. https://doi.org/10.6073/pasta/89b63c4b49b80fb839613e9d389d9902 (Accessed 2021-11-24).
+Santa Barbara Coastal LTER, T. Bell, K. Cavanaugh, and D. Siegel. 2022. SBC LTER: Time series of quarterly NetCDF files of kelp biomass in the canopy from Landsat 5, 7 and 8, since 1984 (ongoing) ver 14. Environmental Data Initiative. https://doi.org/10.6073/pasta/89b63c4b49b80fb839613e9d389d9902 (Accessed 2021-01-26).
