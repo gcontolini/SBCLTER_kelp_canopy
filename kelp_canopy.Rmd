@@ -95,13 +95,13 @@ Figures were created using the above dataset in conjunction with CDFW county sha
 # 
 # #Open Kelp NetCDF File and put in your working directory.
 # #The file can be found here: https://portal.edirepository.org/nis/mapbrowse?scope=knb-lter-sbc&identifier=74
-# nc_data <- nc_open('kelpCanopyFromLandsat_2021.nc')
+# nc_data <- nc_open('LandsatkelpBiomass_2021_v2_withmetadata.nc')
 # # not sure yet how to open it in directly from a URL.
 # # apparently this file is too big for the RStudio Cloud server. So we can't use the server. Or wait we just have to use a static .csv.
 # 
 # #Load necessary variables from NetCDF File
-# lon <- ncvar_get(nc_data, 'lon')
-# lat <- ncvar_get(nc_data, 'lat')
+# lon <- ncvar_get(nc_data, 'longitude')
+# lat <- ncvar_get(nc_data, 'latitude')
 # years <- ncvar_get(nc_data, 'year')
 # quarters <- ncvar_get(nc_data, 'quarter')
 # biomass <- ncvar_get(nc_data, 'biomass')
