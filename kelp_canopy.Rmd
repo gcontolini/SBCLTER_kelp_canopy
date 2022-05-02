@@ -118,7 +118,7 @@ Figures were created using the above dataset in conjunction with CDFW county sha
 # output_biomass <- matrix(ncol=LN, nrow=22)
 # output_area <- matrix(ncol=LN, nrow=22)
 # 
-# # This for() loop takes 5 mins. Sorry. You could run it once and then save the output, but then it wouldn't be linked to the SBCLTER data repository anymore. 
+# # This for() loop takes 5 mins. You could run it once and then save the output, but then it wouldn't be linked to the SBCLTER data repository anymore. 
 # for(i in 1:22){
 # 
 #   #Pull shapefile coordinates from each admin bed
