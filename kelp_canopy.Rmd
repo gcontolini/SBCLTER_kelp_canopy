@@ -203,8 +203,7 @@ Figures were created using the above dataset in conjunction with CDFW county sha
 # write.csv(output4_biomass, 'kelp_biomass_county_output.csv', row.names = FALSE)
 # write.csv(output4_area, 'kelp_area_county_output.csv', row.names = FALSE)
 
-
-output4_area <- read_csv("kelp_area_county_output_01Feb2022.csv")
+output4_area <- read_csv("kelp_area_county_output_2May2022.csv")
 
 ```
 
