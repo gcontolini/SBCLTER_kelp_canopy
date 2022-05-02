@@ -73,7 +73,7 @@ my.theme = theme(
 For more reports like this, visit my RPubs user profile: https://rpubs.com/gcontolini
 
 # Objective
-Summarize California kelp abundance trends from Landsat satellite imagery (SBC LTER et al. 2022) by Administrative Kelp Bed (AKB) using CDFW AKB shapefiles, available at: https://map.dfg.ca.gov/arcgis/rest/services/Project_Marine/Marine_Management/MapServer/13.
+Summarize California kelp abundance trends from Landsat satellite imagery (SBC LTER et al. 2022) in three regions: north (Oregon to San Frrancisco), cenral (San Francisco to Point Conception), and south (Point Conception to Mexico).
 
 # Methods
 ## Satellite imagery
@@ -84,10 +84,12 @@ Data were derived from the three Landsat sensors listed above. Observations are 
 Data are organized into a single NetCDF file and contain the quarterly area means for each Landsat pixel across the three sensors. Relevant metadata such as number of Landsat estimates from which the mean was derived, the number of estimates from each sensor, standard error for each quarterly estimate, spatial coordinates, and date are all included in the file.
 
 ## Plotting
-Figures were created using the above dataset in conjunction with CDFW Administrative Kelp Bed shapefiles. 
+Figures were created using the above dataset in conjunction with shapefiles of state waters spanning divided into three regions as described above. 
 
 ```{r Load Landsast data into AKB shapefiles, include = FALSE}
 # ## THIS HAS ALL BEEN COMMENTED BECAUSE IT IS JUST THE WORK THAT LED TO THE CSVS I'M USING FOR THE FIGS
+# ## ALSO I CAN'T GET THE REGIONAL SHAPEFILES TO WORK YET SO THIS IS VERY INCOMPLETE.
+# ## FOR NOW STILL ADDING UP COUNTIES TO GET REGIONS.
 # 
 # # info on the data: https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.74
 # 
@@ -99,9 +101,9 @@ Figures were created using the above dataset in conjunction with CDFW Administra
 # #Load Admin Bed Shapefile
 # #Place the lat/lon version of the Admin Bed shapefile in your working directory
 # # admin_beds <- st_read('KelpAdmin_latlong/KelpAdmin_latllong.shp')
-# admin_beds = st_read('MAN_CA_KelpAdmin.shx') # wait I changed it to .shx and now it works??
+# admin_beds <- st_read('MAN_CA_KelpAdmin.shx') # wait I changed it to .shx and now it works??
 # counties <- st_read('MAN_CA_CountyStateWaters.shx')
-# 
+# regions <- st_read('regional.shx') # I haven't been able to get the regional shapefiles to jive wiht the Landsat NetCDF yet.
 # 
 # #Open Kelp NetCDF File
 # #Place the NetCDF file in your working directory
