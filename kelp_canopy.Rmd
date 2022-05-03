@@ -205,6 +205,13 @@ Figures were created using the above dataset in conjunction with CDFW county sha
 
 output4_area <- read_csv("kelp_area_county_output_2May2022.csv")
 
+output4_area$Counties[3] = "Los Angeles_San Clemente Is"
+output4_area$Counties[4] = "Ventura_San Nicholas Is"
+output4_area$Counties[5] = "Los Angeles_Santa Catalina Is"
+output4_area$Counties[6] = "Santa Barbara_Santa Barbara Is"
+output4_area$Counties[7] = "Santa Barbara_Santa Cruz-Rosa-Miguel Is"
+output4_area$Counties[8] = "San Francisco_Farallones Is"
+output4_area$Counties[23]= "Ventura_Anacapa Is" # Anacapa Island
 ```
 
 ```{r admin kelp county canopy area tidying, include = FALSE}
