@@ -209,7 +209,7 @@ output4_area <- read_csv("kelp_area_county_output_2May2022.csv") # This is where
 
 # Label offshore islands
 output4_area$Counties[3] = "Los Angeles_San Clemente Is"
-output4_area$Counties[4] = "Ventura_San Nicholas Is"
+output4_area$Counties[4] = "Ventura_San Nicolas Is"
 output4_area$Counties[5] = "Los Angeles_Santa Catalina Is"
 output4_area$Counties[6] = "Santa Barbara_Santa Barbara Is"
 output4_area$Counties[7] = "Santa Barbara_Santa Cruz-Rosa-Miguel Is"
@@ -317,9 +317,170 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Marin'),], aes(x = yea
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Marin County Quarterly') +
    my.theme
+
+## San Francisco
+ggplot(canopy_area_tall[which(canopy_area_tall$county == 'San Francisco'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('San Francisco County Quarterly') +
+   my.theme
+
+## Greater Farallones
+ggplot(canopy_area_tall[which(canopy_area_tall$county == 'San Francisco_Farallones Is'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('Greater Farallones Is Quarterly') +
+   my.theme
+
+## San Mateo
+ggplot(canopy_area_tall[which(canopy_area_tall$county == 'San Mateo'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('San Mateo County Quarterly') +
+   my.theme
+
+## Santa Cruz
+ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Santa Cruz'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('Santa Cruz County Quarterly') +
+   my.theme
+
+## Monterey
+ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Monterey'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('Monterey County Quarterly') +
+   my.theme
+
+## San Luis Obispo
+ggplot(canopy_area_tall[which(canopy_area_tall$county == 'San Luis Obispo'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('San Luis Obispo County Quarterly') +
+   my.theme
+
+## Santa Barbara
+ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Santa Barbara'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('Santa Barbara County Quarterly') +
+   my.theme
+
+## Ventura
+ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Ventura'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('Ventura County Quarterly') +
+   my.theme
+
+## Los Angeles
+ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Los Angeles'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('Los Angeles County Quarterly') +
+   my.theme
+
+## Orange
+ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Orange'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('Orange County Quarterly') +
+   my.theme
+
+## San Diego
+ggplot(canopy_area_tall[which(canopy_area_tall$county == 'San Diego'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('San Diego County Quarterly') +
+   my.theme
+
+## Santa Barbara Island
+ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Santa Barbara_Santa Barbara Is'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('Santa Barbara Island Quarterly') +
+   my.theme
+
+## Santa Cruz-Rosa-Miguel Islands
+ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Santa Barbara_Santa Cruz-Rosa-Miguel Is'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('Santa Barbara, Rosa, Miguel Islands Quarterly') +
+   my.theme
+
+## San Nicolas Island
+ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Ventura_San Nicolas Is'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('San Nicolas Island Quarterly') +
+   my.theme
+
+## San Clemente Island
+ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Los Angeles_San Clemente Is'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('San Clemente Island Quarterly') +
+   my.theme
+
+## Santa Catalina Island
+ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Los Angeles_Santa Catalina Is'),], aes(x = year.qtr, y = km2)) +
+   geom_point() +
+   geom_line() +
+   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
+   labs(x = '', y =  bquote('Canopy area'~(km^2))) +
+   ggtitle('Santa Catalina Island Quarterly') +
+   my.theme
+
 ```
 
-Figure 1. Quarterly canopy area in state waters in coastal counties as estimated from Landsat satellites (Santa Barbara Coastal LTER et al. 2022). Canopy area does not distinguish between bull kelp and giant kelp.  Missing values indicate no data is available. Data is updated through the last quarter of 2021.
+Figure 1. Quarterly canopy area in state waters in coastal counties and islands as estimated from Landsat satellites (Santa Barbara Coastal LTER et al. 2022). Canopy area does not distinguish between bull kelp and giant kelp.  Missing values indicate no data is available. Data is updated through the first quarter of 2022.
 
 ```{r Annual max canopy area in each county, fig.height = 2}
 # Maximum canopy area. in each year and county, find the maximum km2 value.
