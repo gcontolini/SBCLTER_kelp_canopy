@@ -260,9 +260,9 @@ expand.a.little = 0.02
 
 ## North Coast
 ggplot(canopy_area_tall[which(canopy_area_tall$region == 'North'),], aes(x = year.qtr, y = km2)) +
-   geom_point() +
-   geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   #geom_point(color = 'grey50') +
+   geom_line(color = 'grey50') +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    scale_y_continuous(expand = c(expand.a.little, 0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('North Coast Quarterly') +
@@ -272,7 +272,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$region == 'North'),], aes(x = yea
 ggplot(canopy_area_tall[which(canopy_area_tall$region == 'Central'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    scale_y_continuous(expand = c(expand.a.little, 0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Central Coast Quarterly') +
@@ -282,14 +282,27 @@ ggplot(canopy_area_tall[which(canopy_area_tall$region == 'Central'),], aes(x = y
 ggplot(canopy_area_tall[which(canopy_area_tall$region == 'South'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    scale_y_continuous(expand = c(expand.a.little, 0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('South Coast Quarterly') +
    my.theme
 ```
-
 Figure 1. Quarterly canopy area in three regions as estimated from Landsat satellites (Santa Barbara Coastal LTER et al. 2022). Canopy area does not distinguish between bull kelp and giant kelp.  Missing values indicate no data is available. Data is updated through the first quarter of 2022.
+
+```{r kelp canopy area with max in black by region, fig.height = 3, fig.width = 10}
+# create dataframe with only annual max canopy area values
+canopy_area_tall # search within year and regionto find max
+canopy_area_tall_max <- canopy_area_tall %>% 
+  dplyr::group_by(region, year) %>%
+  dplyr::summarise(max.annual = max(km2, na.rm = T)) # but need to keep the quarter col. oh I can probably just merge.
+canopy_area_joined <- left_join(canopy_area_tall, canopy_area_tall_max)
+
+ggplot(canopy_area_joined, aes(x = year, y = max.annual)) +
+  #BOOKMARK!!
+
+```
+
 
 # Tables
 
@@ -315,8 +328,6 @@ kable(n_max_qtrs_region
       , caption = 'Number of quarters with maximum annual canopy area'
 ) %>%
   kable_styling(latex_options = 'hold_position') # otherwise the table moves in the pdf
-
-
 
 ```
 
