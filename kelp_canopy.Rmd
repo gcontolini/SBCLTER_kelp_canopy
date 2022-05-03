@@ -272,7 +272,7 @@ expand.a.little = 0.02
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Del Norte'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(breaks = seq(0, 0.015, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Del Norte County Quarterly') +
@@ -282,7 +282,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Del Norte'),], aes(x =
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Humboldt'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0,0.0225), breaks = seq(0, 0.025, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Humboldt County Quarterly') +
@@ -292,7 +292,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Humboldt'),], aes(x = 
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Mendocino'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0,3), breaks = seq(0, 3, 0.25), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Mendocino County Quarterly') +
@@ -302,7 +302,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Mendocino'),], aes(x =
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Sonoma'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0,2), breaks = seq(0, 2, 0.25), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Sonoma County Quarterly') +
@@ -312,7 +312,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Sonoma'),], aes(x = ye
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Marin'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Marin County Quarterly') +
@@ -322,7 +322,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Marin'),], aes(x = yea
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'San Francisco'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('San Francisco County Quarterly') +
@@ -332,7 +332,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'San Francisco'),], aes
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'San Francisco_Farallones Is'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Greater Farallones Is Quarterly') +
@@ -342,7 +342,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'San Francisco_Farallon
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'San Mateo'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('San Mateo County Quarterly') +
@@ -352,7 +352,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'San Mateo'),], aes(x =
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Santa Cruz'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Santa Cruz County Quarterly') +
@@ -362,7 +362,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Santa Cruz'),], aes(x 
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Monterey'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Monterey County Quarterly') +
@@ -372,7 +372,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Monterey'),], aes(x = 
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'San Luis Obispo'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('San Luis Obispo County Quarterly') +
@@ -382,7 +382,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'San Luis Obispo'),], a
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Santa Barbara'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Santa Barbara County Quarterly') +
@@ -392,7 +392,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Santa Barbara'),], aes
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Ventura'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Ventura County Quarterly') +
@@ -402,7 +402,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Ventura'),], aes(x = y
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Los Angeles'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Los Angeles County Quarterly') +
@@ -412,7 +412,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Los Angeles'),], aes(x
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Orange'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Orange County Quarterly') +
@@ -422,7 +422,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Orange'),], aes(x = ye
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'San Diego'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('San Diego County Quarterly') +
@@ -432,7 +432,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'San Diego'),], aes(x =
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Santa Barbara_Santa Barbara Is'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Santa Barbara Island Quarterly') +
@@ -442,7 +442,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Santa Barbara_Santa Ba
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Santa Barbara_Santa Cruz-Rosa-Miguel Is'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Santa Barbara, Rosa, Miguel Islands Quarterly') +
@@ -452,7 +452,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Santa Barbara_Santa Cr
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Ventura_San Nicolas Is'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('San Nicolas Island Quarterly') +
@@ -462,7 +462,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Ventura_San Nicolas Is
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Los Angeles_San Clemente Is'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('San Clemente Island Quarterly') +
@@ -472,7 +472,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Los Angeles_San Clemen
 ggplot(canopy_area_tall[which(canopy_area_tall$county == 'Los Angeles_Santa Catalina Is'),], aes(x = year.qtr, y = km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(limits = c(0, 0.0125), breaks = seq(0, 0.0125, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '', y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Santa Catalina Island Quarterly') +
@@ -495,7 +495,7 @@ canopy_area_max_annual$max.km2[which(canopy_area_max_annual$max.km2 < 0)] <- NA
 ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Del Norte'),], aes(x = year, y = max.km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(breaks = seq(0, 0.015, 0.0025), expand = c(expand.a.little,0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Del Norte County Max Annual') +
@@ -505,7 +505,7 @@ ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Del Norte'
 ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Humboldt'),], aes(x = year, y = max.km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(expand = c(expand.a.little,0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Humboldt County Max Annual') +
@@ -515,7 +515,7 @@ ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Humboldt')
 ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Mendocino'),], aes(x = year, y = max.km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(expand = c(expand.a.little,0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Mendocino County Max Annual') +
@@ -525,7 +525,7 @@ ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Mendocino'
 ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Sonoma'),], aes(x = year, y = max.km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(expand = c(expand.a.little,0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Sonoma County Max Annual') +
@@ -535,7 +535,7 @@ ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Sonoma'),]
 ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Marin'),], aes(x = year, y = max.km2)) +
    geom_point() +
    geom_line() +
-   scale_x_continuous(breaks = 1984:2021, expand = c(expand.a.little,0)) +
+   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    # scale_y_continuous(expand = c(expand.a.little, 0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
    ggtitle('Marin County Max Annual') +
