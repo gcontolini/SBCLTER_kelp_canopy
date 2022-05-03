@@ -70,6 +70,7 @@ my.theme = theme(
 # edible = read.csv('EdibleSeaweedHarvest_rfm_1-28-21.csv') # edible seaweed harvest. This one has months. That is important.
 # kelp = read.csv('KelpHarvest_vers2_rfm_1-28-21.csv') # kelp harvest
 ```
+View more kelp canopy area summaries on my RPubs profile: https://rpubs.com/gcontolini
 
 # Objective
 Summarize California kelp abundance trends from Landsat satellite imagery (Santa Barbara Coastal LTER et al. 2022) by county using shapefiles of state waters delineated by coastal counties.
