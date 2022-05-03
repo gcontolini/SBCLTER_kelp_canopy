@@ -86,29 +86,31 @@ Data are organized into a single NetCDF file and contain the quarterly area mean
 Figures were created using the above dataset in conjunction with CDFW county shapefiles, which include state waters delineated by coastal counties. Maximum annual canopy area is defined as the quarter each year with the greatest canopy area.
 
 ```{r Load county shapefiles and match with Landsast data, include = FALSE}
-# The loop below requires the NetCDF file which is too large for RStudio Cloud to host. Also takes 5 minutes to run. I commented it out, ran it on my local machine, and read in the output at the end.
+# The loop below requires the NetCDF file which is too large for GitHub to host. Also takes several minutes to run. I commented it out here, copied it, ran it on my local machine, and read in the output at the end of this chunk. You can do the same if you have the shapefiles:
+# 'MAN_CA_CountyStateWaters.shp' # county shapefiles
+# 'LandsatkelpBiomass_2021_v2_withmetadata.nc' # Landsat kelp canopy area pixels from Environmental Data Initiative repository that hosts the Santa Barbara Coastal Long-term Ecological Monitoring Landsat processed kelp canpy area pixel data. You will need to visit their site to get the most updated data. 
 
-# #Kelp Biomass and Area Dynamics of State Waters Delineated by Coastal Counties
-# #Tom Bell
-# #November 18, 2020
-# # **Please let me know if you need help with any step!**
-# 
-# #Install Packages **(Only the first time you ever run this script)**
-# #The first time you ever run this script, please install these packages by removing the '#' in front of each line (lines 8 - 10)
-# # install.packages('ncdf4')
-# # install.packages('sf')
-# # install.packages('sp')
-# 
-# #Load Required Packages
-# #You need to load these packages each time you restart an R session and run this script
-# library(ncdf4)
-# library(sf)
-# library(sp)
-# 
-# #Set Work Directory
-# #This is a folder on your computer where all input files and outputs files will be placed
-# # **Please update this path to the working directory on your computer**
-# # **Note that on a Windows machine the forward slashes "/" have to be changed to back slashes "\"
+#Kelp Biomass and Area Dynamics of State Waters Delineated by Coastal Counties
+#Tom Bell
+#November 18, 2020
+# **Please let me know if you need help with any step!**
+
+#Install Packages **(Only the first time you ever run this script)**
+#The first time you ever run this script, please install these packages by removing the '#' in front of each line (lines 8 - 10)
+# install.packages('ncdf4')
+# install.packages('sf')
+# install.packages('sp')
+
+#Load Required Packages
+#You need to load these packages each time you restart an R session and run this script
+library(ncdf4)
+library(sf)
+library(sp)
+
+#Set Work Directory
+#This is a folder on your computer where all input files and outputs files will be placed
+# **Please update this path to the working directory on your computer**
+# **Note that on a Windows machine the forward slashes "/" have to be changed to back slashes "\"
 # setwd("C:/Users/gcontolini/OneDrive - California Department of Fish and Wildlife/Documents/Bull Kelp Working Group/Data analysis")
 # 
 # #Load Coastal Counties State Waters Shapefile
@@ -118,7 +120,7 @@ Figures were created using the above dataset in conjunction with CDFW county sha
 # #Open Kelp NetCDF File
 # #Place the NetCDF file in your working directory
 # #The file can be found here: https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.74
-# nc_data <- nc_open('LandsatkelpBiomass_2021_v2_withmetadata.nc')
+# nc_data <- nc_open('LandsatKelpBiomass_2022_Q1_withmetadata.nc')
 # 
 # #Load necessary variables from NetCDF File
 # lon <- ncvar_get(nc_data, 'longitude')
@@ -200,11 +202,12 @@ Figures were created using the above dataset in conjunction with CDFW county sha
 # output4_area <- cbind(Counties, output3_area)
 # 
 # #Write CSV of kelp biomass time series for each county
-# write.csv(output4_biomass, 'kelp_biomass_county_output.csv', row.names = FALSE)
-# write.csv(output4_area, 'kelp_area_county_output.csv', row.names = FALSE)
+# write.csv(output4_biomass, 'kelp_biomass_county_output_2May2022.csv', row.names = FALSE)
+# write.csv(output4_area, 'kelp_area_county_output_2May2022.csv', row.names = FALSE)
 
-output4_area <- read_csv("kelp_area_county_output_2May2022.csv")
+output4_area <- read_csv("kelp_area_county_output_2May2022.csv") # This is where I read in the output from the commented section above which was run on my local machine. 
 
+# Label offshore islands
 output4_area$Counties[3] = "Los Angeles_San Clemente Is"
 output4_area$Counties[4] = "Ventura_San Nicholas Is"
 output4_area$Counties[5] = "Los Angeles_Santa Catalina Is"
@@ -379,10 +382,6 @@ ggplot(canopy_area_max_annual[which(canopy_area_max_annual$county == 'Marin'),],
 ```
 
 Figure 2. Annual maximum canopy area (measured quarterly) in state waters in coastal counties as estimated from Landsat satellites (Santa Barbara Coastal LTER et al. 2022). Canopy area does not distinguish between bull kelp and giant kelp. Missing values indicate no data is available. Data is updated through the last quarter of 2021.
-
-```{r Annual max canopy area in all northern counties, fig.height = 9}
-
-``` 
 
 # Tables
 
