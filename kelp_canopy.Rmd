@@ -1,5 +1,5 @@
 ---
-title: "Kelp Canopy Cover Summary Using Administrative Kelp Bed Shapefiles"
+title: "Kelp Canopy Cover Summary Using Three Region Shapefiles"
 author: "Gina Contolini"
 date: Updated `r format(Sys.time(), '%d %B %Y')`
 output: 
@@ -15,7 +15,7 @@ editor_options:
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 options(knitr.table.format = "latex")
 # to create a PDF output, change "output:html_document" to "output: pdf_document" in the header above.
 # note about fig_crop:FALSE. This makes the PDF output look nicer by putting spaces btwn the figures instead of smashing them as close together as possible. It doesn't do anything to the HTML output as far as I can tell.
@@ -59,7 +59,6 @@ my.theme = theme(
    axis.text.x = element_text(size = 10, angle = 90, vjust = 0.5, margin = margin(0,0,5,0)) # rotates x axis labels 90 degrees counter-clockwise, pushes bars onto x axis
 )
 
-
 #### Import data ####
 # info on the data: https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.74
 
@@ -84,7 +83,7 @@ Data were derived from the three Landsat sensors listed above. Observations are 
 Data are organized into a single NetCDF file and contain the quarterly area means for each Landsat pixel across the three sensors. Relevant metadata such as number of Landsat estimates from which the mean was derived, the number of estimates from each sensor, standard error for each quarterly estimate, spatial coordinates, and date are all included in the file.
 
 ## Plotting
-Figures were created using the above dataset in conjunction with shapefiles of state waters spanning divided into three regions as described above. 
+Figures were created using the above dataset in conjunction with shapefiles of state waters divided into three regions as described above. 
 
 ```{r Load Landsast data into AKB shapefiles, include = FALSE}
 # ## THIS HAS ALL BEEN COMMENTED BECAUSE IT IS JUST THE WORK THAT LED TO THE CSVS I'M USING FOR THE FIGS
@@ -260,8 +259,8 @@ expand.a.little = 0.02
 
 ## North Coast
 ggplot(canopy_area_tall[which(canopy_area_tall$region == 'North'),], aes(x = year.qtr, y = km2)) +
-   #geom_point(color = 'grey50') +
-   geom_line(color = 'grey50') +
+   geom_point() +
+   geom_line() +
    scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
    scale_y_continuous(expand = c(expand.a.little, 0)) +
    labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
@@ -292,16 +291,44 @@ Figure 1. Quarterly canopy area in three regions as estimated from Landsat satel
 
 ```{r kelp canopy area with max in black by region, fig.height = 3, fig.width = 10}
 # create dataframe with only annual max canopy area values
-canopy_area_tall # search within year and regionto find max
 canopy_area_tall_max <- canopy_area_tall %>% 
   dplyr::group_by(region, year) %>%
   dplyr::summarise(max.annual = max(km2, na.rm = T)) # but need to keep the quarter col. oh I can probably just merge.
-canopy_area_joined <- left_join(canopy_area_tall, canopy_area_tall_max)
+canopy_area_joined <- left_join(canopy_area_tall, canopy_area_tall_max) # but just want the row with the maximum
+canopy_area_joined <- canopy_area_joined[which(canopy_area_joined$km2 == canopy_area_joined$max.annual),]
 
-ggplot(canopy_area_joined, aes(x = year, y = max.annual)) +
-  #BOOKMARK!!
+# North Coast
+ggplot(canopy_area_tall[which(canopy_area_tall$region == 'North'),], aes(x = year.qtr, y = km2)) +
+  geom_line(color = 'grey50') +
+  geom_point(data = canopy_area_joined[which(canopy_area_joined$region == 'North'),], aes(x = year.qtr, y = max.annual)) +
+  geom_line(data = canopy_area_joined[which(canopy_area_joined$region == 'North'),], aes(x = year.qtr, y = max.annual)) +
+  scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
+  labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
+  ggtitle('North Coast') +
+  my.theme
+
+# Central Coast
+ggplot(canopy_area_tall[which(canopy_area_tall$region == 'Central'),], aes(x = year.qtr, y = km2)) +
+  geom_line(color = 'grey50') +
+  geom_point(data = canopy_area_joined[which(canopy_area_joined$region == 'Central'),], aes(x = year.qtr, y = max.annual)) +
+  geom_line(data = canopy_area_joined[which(canopy_area_joined$region == 'Central'),], aes(x = year.qtr, y = max.annual)) +
+  scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
+  labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
+  ggtitle('Central Coast') +
+  my.theme
+
+# South Coast
+ggplot(canopy_area_tall[which(canopy_area_tall$region == 'South'),], aes(x = year.qtr, y = km2)) +
+  geom_line(color = 'grey50') +
+  geom_point(data = canopy_area_joined[which(canopy_area_joined$region == 'South'),], aes(x = year.qtr, y = max.annual)) +
+  geom_line(data = canopy_area_joined[which(canopy_area_joined$region == 'South'),], aes(x = year.qtr, y = max.annual)) +
+  scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
+  labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
+  ggtitle('South Coast') +
+  my.theme
 
 ```
+Figure 2. Quarterly canopy area (grey) and maximum annual canopy area (black) in three regions as estimated from Landsat satellites (Santa Barbara Coastal LTER et al. 2022). Canopy area does not distinguish between bull kelp and giant kelp.  Missing values indicate no data is available. Data is updated through the first quarter of 2022.
 
 
 # Tables
@@ -333,4 +360,4 @@ kable(n_max_qtrs_region
 
 
 # Literature Cited
-Santa Barbara Coastal LTER, T. Bell, K. Cavanaugh, and D. Siegel. 2022. SBC LTER: Time series of quarterly NetCDF files of kelp biomass in the canopy from Landsat 5, 7 and 8, since 1984 (ongoing) ver 14. Environmental Data Initiative. https://doi.org/10.6073/pasta/89b63c4b49b80fb839613e9d389d9902 (Accessed 2021-01-26).
+Santa Barbara Coastal LTER, T. Bell, K. Cavanaugh, and D. Siegel. 2022. SBC LTER: Time series of quarterly NetCDF files of kelp biomass in the canopy from Landsat 5, 7 and 8, since 1984 (ongoing) ver 14. Environmental Data Initiative. https://doi.org/10.6073/pasta/89b63c4b49b80fb839613e9d389d9902 (Accessed 2022-05-02).
