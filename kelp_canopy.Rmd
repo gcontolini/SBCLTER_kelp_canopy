@@ -1,5 +1,5 @@
 ---
-title: "Kelp Canopy Cover Summary Using Administrative Kelp Bed Shapefiles"
+title: "Kelp Canopy Cover Summary Using Fishing Block Shapefiles"
 author: "Gina Contolini"
 date: Updated `r format(Sys.time(), '%d %B %Y')`
 output: 
@@ -88,117 +88,110 @@ Figures were created using the above dataset in conjunction with CDFW Administra
 
 ```{r Load Landsast data into fishing block shapefiles, include = FALSE}
 # ## THIS HAS ALL BEEN COMMENTED BECAUSE IT IS JUST THE WORK THAT LED TO THE CSVS I'M USING FOR THE FIGS
-# 
-# # info on the data: https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.74
-# 
-# #Kelp Biomass and Area Dynamics of CDFW Admin Beds
-# #Tom Bell
-# #Novemeber 18, 2020
-# # **Please let me know if you need help with any step!**
-# 
-# #Load Admin Bed Shapefile
-# #Place the lat/lon version of the Admin Bed shapefile in your working directory
-# # admin_beds <- st_read('KelpAdmin_latlong/KelpAdmin_latllong.shp')
-# admin_beds = st_read('MAN_CA_KelpAdmin.shx') # wait I changed it to .shx and now it works??
-# counties <- st_read('MAN_CA_CountyStateWaters.shx')
-# 
+# #Load fishing block shapefiles
+# fish_blocks <- st_read('caltrawl_GCS.shp')
 # 
 # #Open Kelp NetCDF File
 # #Place the NetCDF file in your working directory
 # #The file can be found here: https://sbclter.msi.ucsb.edu/data/catalog/package/?package=knb-lter-sbc.74
-# # nc_data_2021 <- nc_open('kelpCanopyFromLandsat_2021.nc') # old data
-# nc_data <- nc_open('LandsatkelpBiomass_2021_v2_withmetadata.nc')
+# fb_nc_data <- nc_open('LandsatKelpBiomass_2022_Q1_withmetadata.nc') # through Q1 2022
 # 
 # #Load necessary variables from NetCDF File
-# lon <- ncvar_get(nc_data, 'longitude')
-# lat <- ncvar_get(nc_data, 'latitude')
-# years <- ncvar_get(nc_data, 'year')
-# quarters <- ncvar_get(nc_data, 'quarter')
-# biomass <- ncvar_get(nc_data, 'biomass')
-# area <- ncvar_get(nc_data, 'area')
+# fb_lon      <- ncvar_get(fb_nc_data, 'longitude')
+# fb_lat      <- ncvar_get(fb_nc_data, 'latitude')
+# fb_years    <- ncvar_get(fb_nc_data, 'year')
+# fb_quarters <- ncvar_get(fb_nc_data, 'quarter')
+# fb_biomass  <- ncvar_get(fb_nc_data, 'biomass')
+# fb_area     <- ncvar_get(fb_nc_data, 'area')
 # 
 # #Make Coordinate Dataframe
-# coords <- data.frame(lon,lat)
+# fb_coords <- data.frame(fb_lon,fb_lat)
 # 
 # #Create output matrices
-# LN = dim(quarters)
-# output_biomass <- matrix(ncol=LN, nrow=87)
-# output_area <- matrix(ncol=LN, nrow=87)
+# fb_LN = dim(fb_quarters)
+# fb_output_biomass <- matrix(ncol = fb_LN, nrow = 547)
+# fb_output_area    <- matrix(ncol = fb_LN, nrow = 547)
 # 
-# for(i in 1:87){
+# # The below loop takes 10 minutes to run.
+# for(i in 1:547){
 # 
-#   #Pull shapefile coordinates from each admin bed
-#   #I had to make hard code an addition here for Bed 86 as I am not as fluent in geospatial analysis in R as I am in Matlab
+#   #Pull shapefile coordinates from each fishing block
+#   #I had to make hard code an addition here for four blocks as I (Tom Bell) am not as fluent in geospatial analysis in R as I am in Matlab
 #   #The issue is that the shaprefile geometry is divided into multiple parts when there are NaNs in the lat/lon columns
-#   if (i == 86) {
-#     bed_coords <- as.data.frame(admin_beds[i,]$geometry[[1]][[2]][[1]])
+#   if (i == 289 | i == 306 | i == 433 | i == 498) {
+#     fb_coords <- as.data.frame(fish_blocks[i,]$geometry[[1]][[2]][[1]])
 #   } else {
-#     bed_coords <- as.data.frame(admin_beds[i,]$geometry[[1]][[1]][[1]])
+#     fb_coords <- as.data.frame(fish_blocks[i,]$geometry[[1]][[1]][[1]])
 #   }
 # 
-#   #Find the kelp coordinates that exist inside each admin bed polygon
-#   kelp_poly <- point.in.polygon(lon, lat, bed_coords$V1, bed_coords$V2, mode.checked=FALSE)
+#   #Find the kelp coordinates that exist inside each fishing block polygon
+#   kelp_poly <- point.in.polygon(fb_lon, fb_lat, fb_coords$V1, fb_coords$V2, mode.checked = FALSE)
 #   TF <- which(kelp_poly %in% 1)
 # 
 #   #Extract biomass and area data for each polygon
-#   bio_bed <- biomass[TF,]
-#   area_bed <- area[TF,]
+#   bio_block <- fb_biomass[TF,]
+#   area_block <- fb_area[TF,]
 # 
 #   #Sum biomass and area
-#   bio_bed_sum <- colSums(bio_bed, na.rm = TRUE, dims = 1)
-#   area_bed_sum <- colSums(area_bed, na.rm = TRUE, dims = 1)
+#   if (is.null(dim(area_block)) == TRUE) {
+#     fb_bio_sum <- bio_block
+#     fb_area_sum <- area_block
+#   } else {
+#     fb_bio_sum  <- colSums(bio_block,  na.rm = TRUE, dims = 1)
+#     fb_area_sum <- colSums(area_block, na.rm = TRUE, dims = 1)
+#   }
 # 
 #   #Remove Columns w/ >25% No Data (Clouds)
 #   #Find all NA values (missing data) in the kelp dataset
-#   bio_bed_NA = is.na(bio_bed)
-#   area_bed_NA = is.na(area_bed)
+#   fb_bio_NA  = is.na(bio_block)
+#   fb_area_NA = is.na(area_block)
 # 
 #   #Find number of kelp pixels in the polygon
-#   L = dim(bio_bed)
+#   L = dim(area_block)
 # 
 #   #Calculate the percent of NAs for each season
-#   bio_bed_NA_percent <- colSums(bio_bed_NA, na.rm = TRUE)/L[1]
-#   area_bed_NA_percent <- colSums(area_bed_NA, na.rm = TRUE)/L[1]
+#   if (is.null(dim(area_block)) == TRUE) {
+#     fb_bio_NA_percent  <- fb_bio_NA
+#     fb_area_NA_percent <- fb_area_NA
+#   } else {
+#     fb_bio_NA_percent  <- colSums(fb_bio_NA,  na.rm = TRUE)/L[1]
+#     fb_area_NA_percent <- colSums(fb_area_NA, na.rm = TRUE)/L[1]
+#   }
 # 
-#   #Find seasons with greater than 20% missing data
-#   NA_GT <- which(bio_bed_NA_percent > 0.25)
-#   NA_GTA <- which(area_bed_NA_percent > 0.25)
+#   #Find seasons with greater than 25% missing data
+#   fb_NA_GT  <- which(fb_bio_NA_percent > 0.25)
+#   fb_NA_GTA <- which(fb_area_NA_percent > 0.25)
 # 
-#   #Set seasons with greater than 20% missing data to -999
-#   bio_bed_sum[NA_GT] = -999
-#   area_bed_sum[NA_GTA] = -999
+#   #Set seasons with greater than 25% missing data to -999
+#   fb_bio_sum[fb_NA_GT]   = -999
+#   fb_area_sum[fb_NA_GTA] = -999
 # 
 #   #Add summed kelp canopy data to matrix
-#   output_biomass[i,] <- bio_bed_sum
-#   output_area[i,] <- area_bed_sum
+#   fb_output_biomass[i,] <- fb_bio_sum
+#   fb_output_area[i,]    <- fb_area_sum
 # 
 # }
 # 
 # #Transpose Quarter and Year data
-# quarterst <- t(quarters)
-# yearst <- t(years)
+# fb_quarterst <- t(fb_quarters)
+# fb_yearst <- t(fb_years)
 # 
 # #Add Quarter and Year data to output matrices
-# output2_biomass <- rbind(quarterst, output_biomass)
-# output3_biomass <- rbind(yearst, output2_biomass)
-# output2_area <- rbind(quarterst, output_area)
-# output3_area <- rbind(yearst, output2_area)
+# fb_output2_biomass <- rbind(fb_quarterst, fb_output_biomass)
+# fb_output3_biomass <- rbind(fb_yearst,    fb_output2_biomass)
+# fb_output2_area    <- rbind(fb_quarterst, fb_output_area)
+# fb_output3_area    <- rbind(fb_yearst,    fb_output2_area)
 # 
-# #Add Admin Bed Number to output matrices
-# BedsNA <- admin_beds$KelpBed
-# Beds <- c(rep(NA,2),BedsNA)
-# output4_biomass <- cbind(Beds, output3_biomass)
-# output4_area <- cbind(Beds, output3_area)
+# #Add fishing block Number to output matrices
+# blocksNA <- fish_blocks$BLOCK10_ID
+# blocks <- c(rep(NA,2),blocksNA)
+# fb_output4_biomass <- cbind(blocks, fb_output3_biomass)
+# fb_output4_area <- cbind(blocks, fb_output3_area)
 # 
-# #Write CSV of kelp biomass time series for each Admin Bed
-# write.csv(output4_biomass, 'kelp_biomass_output_2022.csv', row.names = FALSE)
-# write.csv(output4_area, 'kelp_area_output_2022.csv', row.names = FALSE)
+# #Write CSV of kelp biomass time series for each fishing block
+# write.csv(fb_output4_biomass, 'kelp_biomass_output_fishing_block.csv', row.names = FALSE)
+# write.csv(fb_output4_area, 'kelp_area_output_fishing_block.csv', row.names = FALSE)
 
-# The above just organizes data into AKBs, which can only be done in a directory that can hold the large NetCDF file (>100 MB), which RStudio Cloud cannot. So I ran that code on my local machine and now I will read in the resulting .csv:
-
-output4_area <- read.csv('kelp_area_output_2022.csv')
-
-# I believe we only got countywide data directly from T Bell.
 ```
 
 ```{r admin kelp county canopy area tidying, include = FALSE}
