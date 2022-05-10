@@ -294,8 +294,11 @@ Figure 1. Quarterly canopy area in three regions as estimated from Landsat satel
 canopy_area_tall_max <- canopy_area_tall %>% 
   dplyr::group_by(region, year) %>%
   dplyr::summarise(max.annual = max(km2, na.rm = T)) # but need to keep the quarter col. oh I can probably just merge.
+canopy_area_tall_max <- canopy_area_tall_max %>% #remove 2022 max because there's only one quarter
+                        filter(!year == 2022)
 canopy_area_joined <- left_join(canopy_area_tall, canopy_area_tall_max) # but just want the row with the maximum
 canopy_area_joined <- canopy_area_joined[which(canopy_area_joined$km2 == canopy_area_joined$max.annual),]
+
 
 # North Coast
 ggplot(canopy_area_tall[which(canopy_area_tall$region == 'North'),], aes(x = year.qtr, y = km2)) +
@@ -303,6 +306,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$region == 'North'),], aes(x = yea
   geom_point(data = canopy_area_joined[which(canopy_area_joined$region == 'North'),], aes(x = year.qtr, y = max.annual)) +
   geom_line(data = canopy_area_joined[which(canopy_area_joined$region == 'North'),], aes(x = year.qtr, y = max.annual)) +
   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
+  scale_y_continuous(expand = c(expand.a.little,0)) +
   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
   ggtitle('North Coast') +
   my.theme
@@ -313,6 +317,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$region == 'Central'),], aes(x = y
   geom_point(data = canopy_area_joined[which(canopy_area_joined$region == 'Central'),], aes(x = year.qtr, y = max.annual)) +
   geom_line(data = canopy_area_joined[which(canopy_area_joined$region == 'Central'),], aes(x = year.qtr, y = max.annual)) +
   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
+  scale_y_continuous(expand = c(expand.a.little,0)) +
   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
   ggtitle('Central Coast') +
   my.theme
@@ -323,6 +328,7 @@ ggplot(canopy_area_tall[which(canopy_area_tall$region == 'South'),], aes(x = yea
   geom_point(data = canopy_area_joined[which(canopy_area_joined$region == 'South'),], aes(x = year.qtr, y = max.annual)) +
   geom_line(data = canopy_area_joined[which(canopy_area_joined$region == 'South'),], aes(x = year.qtr, y = max.annual)) +
   scale_x_continuous(breaks = 1984:2022, expand = c(expand.a.little,0)) +
+  scale_y_continuous(expand = c(expand.a.little,0)) +
   labs(x = '',  y =  bquote('Canopy area'~(km^2))) +
   ggtitle('South Coast') +
   my.theme
