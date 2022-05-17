@@ -302,6 +302,7 @@ canopy_area_joined <- canopy_area_joined[which(canopy_area_joined$km2 == canopy_
 
 # North Coast
 ggplot(canopy_area_tall[which(canopy_area_tall$region == 'North'),], aes(x = year.qtr, y = km2)) +
+  geom_rect(xmin = 2014.2, xmax = 2022.5, ymin = -Inf, ymax = Inf, fill = 'pink') +
   geom_line(color = 'grey50') +
   geom_point(data = canopy_area_joined[which(canopy_area_joined$region == 'North'),], aes(x = year.qtr, y = max.annual)) +
   geom_line(data = canopy_area_joined[which(canopy_area_joined$region == 'North'),], aes(x = year.qtr, y = max.annual)) +
